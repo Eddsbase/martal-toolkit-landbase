@@ -1,380 +1,961 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Martal Operator's Toolkit — Landbase Edition</title>
-<meta name="description" content="Scaled-down, externally-shareable Operator's Toolkit. Videos, docs, and playbooks for Landbase outbound.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="description" content="Everything our top SDRs use day-to-day. Videos, docs, and playbooks for outbound on Landbase." />
+<meta property="og:title" content="Martal Operator's Toolkit — Landbase Edition" />
+<meta property="og:description" content="Everything our top SDRs use day-to-day. Videos, docs, and playbooks for outbound on Landbase." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#0a0a0a;--s1:#141414;--s2:#1a1a1a;--s3:#222222;--s4:#2a2a2a;
-  --b1:rgba(255,255,255,.06);--b2:rgba(255,255,255,.10);--b3:rgba(255,255,255,.16);
-  --g:#8ed122;--g2:#a0e034;--g-a:rgba(142,209,34,.10);--g-bd:rgba(142,209,34,.20);
-  --t:#ffffff;--t2:#d4d4d4;--t3:#9ca3af;--t4:#6b7280;
-  --f:'Outfit',system-ui,sans-serif;--fb:'DM Sans',system-ui,sans-serif;--m:'DM Mono',ui-monospace,monospace;
-  --r:14px;--r2:18px;--maxw:1240px;
-}
-html{scroll-behavior:smooth;scroll-padding-top:80px}
-body{font-family:var(--fb);background:var(--bg);color:var(--t);line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
-a{color:var(--g);text-decoration:none;transition:color .15s}
-a:hover{color:var(--g2)}
-::selection{background:#8ed12233;color:#fff}
-::-webkit-scrollbar{width:8px;height:8px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:4px}
-::-webkit-scrollbar-thumb:hover{background:#3a3a3a}
-
-/* NAV / TOPBAR */
-.topbar{position:sticky;top:0;z-index:50;background:rgba(10,10,10,.85);backdrop-filter:blur(20px) saturate(1.6);-webkit-backdrop-filter:blur(20px) saturate(1.6);border-bottom:1px solid var(--b1)}
-.topbar-in{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 28px}
-.brand{display:flex;align-items:center;gap:12px}
-.brand-mark{width:36px;height:36px;background:var(--g);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.brand-mark svg{width:22px;height:22px;display:block}
-.brand-text{display:flex;flex-direction:column;line-height:1.15}
-.brand-text .b1{font-family:var(--f);font-weight:800;font-size:.92rem;letter-spacing:-.01em;color:var(--t)}
-.brand-text .b2{font-family:var(--m);font-size:.65rem;color:var(--t3);text-transform:uppercase;letter-spacing:.12em;margin-top:2px}
-.topbar-meta{display:flex;align-items:center;gap:18px}
-.topbar-meta .pill{font-family:var(--m);font-size:.62rem;color:var(--g);background:var(--g-a);border:1px solid var(--g-bd);padding:5px 10px;border-radius:6px;text-transform:uppercase;letter-spacing:.1em;font-weight:500}
-.topbar-meta .meta{font-family:var(--m);font-size:.65rem;color:var(--t4);text-transform:uppercase;letter-spacing:.1em}
-@media (max-width:680px){.topbar-meta .meta{display:none}}
-
-/* LAYOUT */
-.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
-.panel{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:32px;margin-top:24px;position:relative;overflow:hidden}
-.panel:first-of-type{margin-top:32px}
-
-/* SECTION LABELS */
-.s-label{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-.s-label .bar{display:flex;gap:2px}
-.s-label .bar span{width:3px;height:12px;background:var(--g);display:block}
-.s-label .txt{font-family:var(--m);font-size:.7rem;color:var(--t3);text-transform:uppercase;letter-spacing:.16em;font-weight:500}
-
-/* HERO */
-.hero h1{font-family:var(--f);font-weight:900;font-size:clamp(2rem,5vw,3.4rem);line-height:1.02;letter-spacing:-.035em;color:var(--t);margin-bottom:18px}
-.hero h1 em{font-style:normal;color:var(--g)}
-.hero .lede{font-size:1.05rem;color:var(--t2);max-width:760px;line-height:1.55}
-.hero .lede + .lede{margin-top:12px;color:var(--t3)}
-
-/* STATS */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:30px}
-@media (max-width:840px){.stats{grid-template-columns:repeat(2,1fr)}}
-.stat{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:20px 18px 24px;position:relative;overflow:hidden}
-.stat::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,transparent,var(--g),transparent);opacity:.6}
-.stat .k{font-family:var(--m);font-size:.6rem;color:var(--t4);text-transform:uppercase;letter-spacing:.14em;font-weight:500;margin-bottom:10px}
-.stat .v{font-family:var(--f);font-weight:800;font-size:2.1rem;color:var(--t);letter-spacing:-.03em;line-height:1}
-.stat .s{font-family:var(--fb);font-size:.78rem;color:var(--t3);margin-top:6px}
-
-/* TABS */
-.tabs{display:flex;gap:4px;background:var(--s2);border:1px solid var(--b1);border-radius:10px;padding:4px;margin:8px 0 24px;width:fit-content;max-width:100%;overflow-x:auto}
-.tab{font-family:var(--m);font-size:.7rem;font-weight:500;text-transform:uppercase;letter-spacing:.12em;color:var(--t3);background:transparent;border:none;padding:9px 16px;border-radius:7px;cursor:pointer;transition:all .15s;white-space:nowrap}
-.tab:hover{color:var(--t2)}
-.tab.active{background:var(--g);color:#0a0a0a;font-weight:600}
-
-/* CARD GRID */
-.groups{display:flex;flex-direction:column;gap:28px}
-.group-label{font-family:var(--m);font-size:.65rem;color:var(--g);text-transform:uppercase;letter-spacing:.16em;font-weight:500;margin-bottom:14px;display:flex;align-items:center;gap:10px}
-.group-label::before{content:'';width:14px;height:1px;background:var(--g);display:block}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
-.card{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:18px 18px 16px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;text-align:left;font-family:var(--fb);color:var(--t);position:relative;overflow:hidden}
-.card:hover{background:var(--s3);border-color:var(--b2);transform:translateY(-1px)}
-.card .row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
-.card .type{font-family:var(--m);font-size:.58rem;text-transform:uppercase;letter-spacing:.14em;padding:3px 7px;border-radius:4px;font-weight:500}
-.type-video{color:#8ed122;background:rgba(142,209,34,.10);border:1px solid rgba(142,209,34,.18)}
-.type-doc{color:#7dd3fc;background:rgba(125,211,252,.10);border:1px solid rgba(125,211,252,.18)}
-.type-sheet{color:#86efac;background:rgba(134,239,172,.10);border:1px solid rgba(134,239,172,.18)}
-.type-article{color:#fcd34d;background:rgba(252,211,77,.10);border:1px solid rgba(252,211,77,.18)}
-.type-tool{color:#c4b5fd;background:rgba(196,181,253,.10);border:1px solid rgba(196,181,253,.18)}
-.card .arrow{font-family:var(--m);color:var(--t4);transition:all .15s}
-.card:hover .arrow{color:var(--g);transform:translate(2px,-2px)}
-.card .title{font-family:var(--f);font-size:1rem;font-weight:600;letter-spacing:-.01em;line-height:1.25;color:var(--t);margin-bottom:8px}
-.card .desc{font-size:.83rem;color:var(--t3);line-height:1.5;flex:1}
-
-/* PLAYBOOKS */
-.pb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
-.pb{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:22px 20px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:10px;text-align:left;font-family:var(--fb);color:var(--t);position:relative;overflow:hidden}
-.pb:hover{background:var(--s3);border-color:var(--b2)}
-.pb::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--g);opacity:.7}
-.pb .pk{font-family:var(--m);font-size:.58rem;color:var(--g);text-transform:uppercase;letter-spacing:.14em;font-weight:500}
-.pb .pt{font-family:var(--f);font-size:1.1rem;font-weight:700;letter-spacing:-.01em;color:var(--t);line-height:1.2}
-.pb .pd{font-size:.82rem;color:var(--t3);line-height:1.5}
-
-/* COLOPHON */
-.colophon{margin-top:24px;margin-bottom:48px;padding:24px 32px;background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;font-family:var(--m);font-size:.7rem;color:var(--t4);text-transform:uppercase;letter-spacing:.12em}
-.colophon a{color:var(--t3)}
-.colophon a:hover{color:var(--g)}
-
-/* MODAL */
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:24px}
-.modal.open{display:flex}
-.modal-box{background:var(--s1);border:1px solid var(--b2);border-radius:var(--r2);width:100%;max-width:1100px;height:min(78vh,800px);position:relative;display:flex;flex-direction:column;overflow:hidden}
-.modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--b1);gap:14px}
-.modal-head .t{font-family:var(--f);font-weight:600;font-size:.95rem;color:var(--t);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.modal-head .actions{display:flex;gap:6px;flex-shrink:0}
-.modal-head button{font-family:var(--m);font-size:.62rem;text-transform:uppercase;letter-spacing:.12em;color:var(--t3);background:transparent;border:1px solid var(--b1);border-radius:6px;padding:7px 12px;cursor:pointer;transition:all .15s;font-weight:500}
-.modal-head button:hover{color:var(--t);border-color:var(--b3);background:var(--s3)}
-.modal-frame{flex:1;background:var(--bg);border:none;width:100%}
+  /* ───────── Martal Brand Tokens (matches Performance Dashboard) ───────── */
+  :root {
+    --g: #8ed122;
+    --g-dark: #3d8514;
+    --g-light: #eef7e7;
+    --announce: #0d1a08;
+    --bg: #0a0a0a;
+    --card: #141414;
+    --card-2: #1a1a1a;
+    --card-3: #222222;
+    --border: #2a2a2a;
+    --border-2: #3a3a3a;
+    --text: #ffffff;
+    --muted: #9ca3af;
+    --muted-2: #6b7280;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+    --shadow-md: 0 2px 8px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.06);
+    --font-display: 'Outfit', system-ui, sans-serif;
+    --font-body: 'DM Sans', system-ui, sans-serif;
+    --font-mono: 'DM Mono', ui-monospace, monospace;
+  }
+  /* ───────── base ───────── */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  button, input, select { font-family: inherit; }
+  button { cursor: pointer; }
+  a { color: inherit; }
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 10px; }
+  ::selection { background: #8ed12233; color: #ffffff; }
+  button, a { transition: color .15s, background .15s, border-color .15s, opacity .15s, transform .15s; }
+  /* ───────── shell ───────── */
+  .shell { max-width: 1280px; margin: 0 auto; padding: 18px 24px 60px; }
+  @media (max-width: 640px) { .shell { padding: 14px 14px 50px; } }
+  /* ───────── top bar ───────── */
+  .topbar {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 18px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    gap: 16px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .brand-mark {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    overflow: hidden;
+    display: grid; place-items: center;
+  }
+  .brand-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .brand-text { display: flex; flex-direction: column; min-width: 0; }
+  .brand-name {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: -.2px;
+    color: var(--text);
+  }
+  .brand-sub {
+    font-family: var(--font-body);
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .topbar-meta {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .topbar-meta .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--g); box-shadow: 0 0 8px var(--g); }
+  @media (max-width: 640px) {
+    .topbar-meta .label { display: none; }
+  }
+  /* ───────── hero card ───────── */
+  .hero-card {
+    background: linear-gradient(180deg, #0d0d0d 0%, #0a0a0a 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px 32px 28px;
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--g), var(--g) 30%, transparent);
+  }
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .hero-eyebrow .bar { width: 3px; height: 14px; background: var(--g); border-radius: 2px; }
+  .hero-eyebrow .text {
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    color: var(--muted);
+  }
+  .hero-card h1 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(34px, 5vw, 52px);
+    line-height: 1.05;
+    letter-spacing: -1.6px;
+    margin-bottom: 14px;
+    color: var(--text);
+    max-width: 22ch;
+  }
+  .hero-card h1 .accent { color: var(--g); }
+  .hero-card .lede {
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--muted);
+    max-width: 64ch;
+    margin-bottom: 22px;
+  }
+  /* ───────── stat strip ───────── */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px 14px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    min-height: 92px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .stat::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--g), #8ed12255);
+  }
+  .stat .label {
+    color: var(--muted);
+    font-size: 9.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    line-height: 1.3;
+    font-family: var(--font-body);
+  }
+  .stat .value {
+    color: var(--text);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -1.2px;
+    line-height: 1;
+    font-family: var(--font-display);
+  }
+  .stat .value .unit {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0;
+    margin-left: 4px;
+  }
+  .stat .sub {
+    font-size: 10px;
+    color: var(--muted-2);
+    margin-top: 4px;
+    font-family: var(--font-body);
+  }
+  /* ───────── section panel ───────── */
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+  }
+  .panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .panel-head-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .panel-head .bar { width: 3px; height: 22px; background: var(--g); border-radius: 2px; flex-shrink: 0; }
+  .panel-head h2 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: -.4px;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .panel-head .sub {
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  /* ───────── section label (matches dashboard pattern) ───────── */
+  .section-label {
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    font-family: var(--font-body);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label .bar { width: 3px; height: 12px; background: var(--g); border-radius: 2px; flex-shrink: 0; }
+  /* ───────── track tabs ───────── */
+  .tabs {
+    display: inline-flex;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 4px;
+  }
+  .tab {
+    border: 0;
+    background: transparent;
+    padding: 7px 14px;
+    font-family: var(--font-body);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-radius: 5px;
+  }
+  .tab.is-active {
+    background: var(--g);
+    color: var(--bg);
+  }
+  .tab:hover:not(.is-active) { color: var(--text); }
+  .track { display: none; }
+  .track.is-active { display: block; }
+  /* ───────── category groups ───────── */
+  .cat-group { margin-bottom: 28px; }
+  .cat-group:last-child { margin-bottom: 0; }
+  .cat-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .cat-bar .bar { width: 3px; height: 12px; background: var(--g); border-radius: 2px; }
+  .cat-bar h3 {
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+  .cat-bar .count {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+    margin-left: auto;
+    letter-spacing: .5px;
+  }
+  /* ───────── item cards ───────── */
+  .items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 10px;
+  }
+  .item {
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 16px 14px;
+    text-align: left;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    color: var(--text);
+  }
+  .item:hover {
+    background: var(--card-3);
+    border-color: var(--border-2);
+    transform: translateY(-1px);
+  }
+  .item:focus-visible {
+    outline: 2px solid var(--g);
+    outline-offset: 2px;
+  }
+  .item-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .pill {
+    font-family: var(--font-body);
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: .6px;
+    text-transform: uppercase;
+    padding: 2px 9px;
+    border-radius: 4px;
+    display: inline-block;
+    white-space: nowrap;
+  }
+  .pill.is-video   { color: #8ed122; background: #8ed12218; border: 1px solid #8ed12240; }
+  .pill.is-doc     { color: #60a5fa; background: #60a5fa18; border: 1px solid #60a5fa40; }
+  .pill.is-tool    { color: #f5c518; background: #f5c51818; border: 1px solid #f5c51840; }
+  .pill.is-article { color: #c084fc; background: #c084fc18; border: 1px solid #c084fc40; }
+  .item-arrow {
+    color: var(--muted-2);
+    flex-shrink: 0;
+  }
+  .item:hover .item-arrow {
+    color: var(--g);
+    transform: translate(3px, -3px);
+  }
+  .item-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.3;
+    color: var(--text);
+    letter-spacing: -.2px;
+  }
+  .item-desc {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+  /* ───────── playbooks grid ───────── */
+  .playbooks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 10px;
+  }
+  .playbook {
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--g);
+    border-radius: 8px;
+    padding: 22px 22px 20px;
+    text-align: left;
+    width: 100%;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 240px;
+    position: relative;
+  }
+  .playbook:hover {
+    background: var(--card-3);
+    border-color: var(--border-2);
+    border-left-color: var(--g);
+  }
+  .playbook:focus-visible {
+    outline: 2px solid var(--g);
+    outline-offset: 2px;
+  }
+  .playbook-vol {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--g);
+  }
+  .playbook-title {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 22px;
+    line-height: 1.1;
+    letter-spacing: -.6px;
+    color: var(--text);
+  }
+  .playbook-desc {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--muted);
+    flex-grow: 1;
+  }
+  .playbook-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-body);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-top: auto;
+  }
+  .playbook:hover .playbook-cta { color: var(--g); }
+  .playbook:hover .playbook-cta svg { transform: translateX(4px); }
+  /* ───────── footer ───────── */
+  .colophon {
+    padding: 22px 24px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .colophon .accent { color: var(--g); }
+  /* ───────── modal ───────── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.85);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: none;
+    z-index: 100;
+    padding: 24px;
+  }
+  .modal-overlay.is-open {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+  }
+  .modal {
+    background: var(--card);
+    border: 1px solid var(--border);
+    width: 100%;
+    max-width: 1100px;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px -10px rgba(0,0,0,.7);
+  }
+  .modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--card);
+    gap: 14px;
+  }
+  .modal-head-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    flex: 1;
+  }
+  .modal-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 13.5px;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: -.2px;
+  }
+  .modal-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .modal-btn {
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-family: var(--font-body);
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+  .modal-btn:hover {
+    background: var(--g);
+    color: var(--bg);
+    border-color: var(--g);
+  }
+  .modal-btn.close { padding: 6px 9px; }
+  .modal-body {
+    flex: 1;
+    background: #ffffff;
+    position: relative;
+    min-height: 0;
+  }
+  .modal-body iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+  @media (max-width: 640px) {
+    .modal-overlay { padding: 0; }
+    .modal { border-radius: 0; max-height: 100vh; border: 0; }
+    .modal-btn span { display: none; }
+    .hero-card { padding: 24px 20px 22px; }
+    .panel { padding: 18px 18px; }
+  }
 </style>
 </head>
 <body>
-
-<header class="topbar">
-  <div class="topbar-in">
+<div class="shell">
+  <!-- ───────── TOP BAR ───────── -->
+  <div class="topbar">
     <div class="brand">
-      <div class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M 16 84 L 50 18 L 84 84" stroke="#0a0a0a" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-      </div>
+      <div class="brand-mark"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAIAAABMXPacAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAASy0lEQVR42u1dWVAUVxfuvj37DMOmFGUKEVHLpRIXIkUwLiCYmETBBRUjm8qS5zyn8pDnVB7zEHAAURDFJQZXQC1R45pgKINRURMC4oIwzQyz9JKHU/bPz3pvT89Mi3OfLBxmhvvdc853vnvOaTo2NpYKreAtFNqCEAAhAEIrBMA7uzRv19elaZqmafiH9EPxzQoB4Dc7RQghJIqi1+vlOM7r9QqCIIoiTdMIIY1Go9PpNBoNRVHw8xAASh55hJDT6RwaGtJoNJGRkXFxcTNmzLBarTqdzuPxsCz77Nmz7u7uvr4+URRNJpPBYHiLYNCo/OBzHDcwMLBw4cK1a9euWrVq0aJFsbGxer1++Mu8Xm9XV1dbW1tLS8ulS5cePnwYFhYGFvMWOFXVJmIIIbfbbTKZvvnmm127dhmNxtFOn36zpP+y2+0HDhz47rvvOI7TaDTqx0ClANA0zfO8TqdraGhITk6mKIrneSkID9/xEUGYYRiKos6fP5+bm6vT6dQPAGOxWNT4tRjGbrf/8MMPn332mcfjQW/W6N2XUBkeqOfNm+d0OpuamiwWiyAIIQsgdj4Oh2Pp0qXNzc2iKMKhxl+w4y9fvkxJSXE4HAzDqNkO1JiIgfcvLCyUF0jht2JiYjZv3my320nxe9ctgKZpr9c7ffr0a9euWa3WETkXvhHQNH3//v3Vq1cjpOpsX3VfjmGYwcHBzZs3h4eHwz7KsyFRFOfPn79+/XqVG4HqAOA4Ljw8PD8/X97ZH06NKIoqKyvTarWhGEBw/FmWzcjImDdvniAIvngPhmEEQUhJSVmzZo2ajUB1FoAQKioqko6wLwve4auvvgpZAO7WDw4OLlu2bPXq1TLY53hGkJGRkZKSwrKsOqOxugBwu915eXkajQbyXt8XAFlWVub1en2JKFOfhgL7jI6Ovnr1alRUFOg8igBAUZTH41m9evVff/1lNBrVlhirxQKAfW7atCkqKorneaVOK2hKer2+qKhoaGhIhV5IRYmYIAgXL15csGCBj/xnTCMYGBhITU198eKF2lgpUsnxZ1l27dq1iu8+GIEgCBEREbm5uSzLqo2PqsUkaZpWin2O+eaiKBYWFsbExHg8nhAAI8kPaJ9r1qwhZZ+YaCGEBEGIi4vLyspiWRZuj0MA/G93hoaGdu3apdVqSdknfqwGIyguLjaZTEpx3KkAAE3TLpcrPj5+y5Yt1Jv7LMyzD3cv+DCLovjBBx9kZGSoSpkIMgCS9hkdHY3PPuGV33777ffff0+9ua3E9FclJSVgDSEaKpN9SrRy0aJFs2bNunz58pj3lON9liiKn3766Y0bN1RyW4mCe/xlsE84/vX19f39/R0dHa2trZBtYQLAMMzevXu9Xq9KkrLgxwBS9klawjMaXAaYDFOcN/X4VrLlw17xUaT/jSb5UCAQ/zhAcEYJjuOWg4WBOEZAIQAhAEIABDaXyEAQgBeyfwoEgQTBOAFAcGlxx4eL+ZQjEAAAAASUVORK5CYII=" alt="Martal Group" /></div>
       <div class="brand-text">
-        <div class="b1">Martal Operator's Toolkit</div>
-        <div class="b2">Landbase Edition · External</div>
+        <div class="brand-name">Martal Group</div>
+        <div class="brand-sub">Operator's Toolkit</div>
       </div>
     </div>
     <div class="topbar-meta">
-      <span class="pill">Open Access</span>
-      <span class="meta">v1.0</span>
+      <span class="dot"></span>
+      <span class="label">Landbase Edition</span>
+      <span style="color:var(--border-2)">|</span>
+      <span>v.1</span>
     </div>
   </div>
-</header>
-
-<main class="wrap">
-
-  <section class="panel hero">
-    <div class="s-label"><div class="bar"><span></span><span></span><span></span></div><div class="txt">§ 00 · Overview</div></div>
-    <h1>Everything our top SDRs <em>use day-to-day.</em></h1>
-    <p class="lede"><strong>Videos &amp; Docs.</strong> Two tracks. <em style="color:var(--g);font-style:normal">General</em> covers the fundamentals that apply on any platform — ICP, email writing, spam triggers, cold call practice. <em style="color:var(--g);font-style:normal">Landbase</em> is platform-specific: campaign setup, list building, LinkedIn integration, reporting, and the workarounds we've found that move the numbers.</p>
-    <p class="lede"><strong>Playbooks.</strong> Four standalone playbooks from the Martal Outbound Series. Cold calling, email and LinkedIn, objection handling, and list building inside Landbase. Read them in order to build the foundation — come back to individual ones when something specific stops working.</p>
-
+  <!-- ───────── HERO CARD ───────── -->
+  <section class="hero-card">
+    <div class="hero-eyebrow">
+      <div class="bar"></div>
+      <div class="text">Field Manual · External Edition</div>
+    </div>
+    <h1>The Operator's <span class="accent">Toolkit.</span></h1>
+    <p class="lede">Everything our top SDRs use day-to-day — videos, docs, and the four core playbooks behind Martal's outbound motion on Landbase.</p>
     <div class="stats">
-      <div class="stat"><div class="k">Total Items</div><div class="v" id="stat-total">—</div><div class="s">Videos · Docs · Playbooks</div></div>
-      <div class="stat"><div class="k">Videos &amp; Docs</div><div class="v" id="stat-vd">—</div><div class="s">General + Landbase</div></div>
-      <div class="stat"><div class="k">Playbooks</div><div class="v" id="stat-pb">—</div><div class="s">Outbound series</div></div>
-      <div class="stat"><div class="k">Access</div><div class="v" style="font-size:1.5rem">Open</div><div class="s">No sign-in required</div></div>
-    </div>
-  </section>
-
-  <section class="panel">
-    <div class="s-label"><div class="bar"><span></span><span></span><span></span></div><div class="txt">§ 01 · Videos &amp; Docs</div></div>
-    <div class="tabs" role="tablist">
-      <button class="tab active" data-track="general" role="tab">General</button>
-      <button class="tab" data-track="landbase" role="tab">Landbase</button>
-    </div>
-    <div id="track-general" class="groups"></div>
-    <div id="track-landbase" class="groups" hidden></div>
-  </section>
-
-  <section class="panel">
-    <div class="s-label"><div class="bar"><span></span><span></span><span></span></div><div class="txt">§ 02 · Playbooks</div></div>
-    <div class="pb-grid" id="pb-grid"></div>
-  </section>
-
-</main>
-
-<footer class="colophon wrap">
-  <div>Martal Group · Operator's Toolkit · Landbase Edition</div>
-  <div>External · Public · Updated <span id="updated"></span></div>
-</footer>
-
-<div class="modal" id="modal" role="dialog" aria-modal="true">
-  <div class="modal-box">
-    <div class="modal-head">
-      <div class="t" id="modal-title"></div>
-      <div class="actions">
-        <button onclick="openInNewTab()">Open in tab ↗</button>
-        <button onclick="closeModal()">Close ✕</button>
+      <div class="stat">
+        <div class="label">Total Resources</div>
+        <div>
+          <div class="value">27</div>
+          <div class="sub">Videos · Docs · Playbooks</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="label">Videos &amp; Docs</div>
+        <div>
+          <div class="value">23</div>
+          <div class="sub">General + Landbase tracks</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="label">Playbooks</div>
+        <div>
+          <div class="value">4</div>
+          <div class="sub">Martal Outbound Series</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="label">Access</div>
+        <div>
+          <div class="value" style="font-size:22px;color:var(--g)">Open</div>
+          <div class="sub">No sign-in required</div>
+        </div>
       </div>
     </div>
-    <iframe class="modal-frame" id="modal-frame" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+  </section>
+  <!-- ───────── WHAT'S INSIDE ───────── -->
+  <section class="panel">
+    <div class="panel-head">
+      <div class="panel-head-left">
+        <div class="bar"></div>
+        <div>
+          <h2>What's Inside</h2>
+          <div class="sub">A quick tour of the two sections below</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;">
+      <div>
+        <div class="section-label"><span class="bar"></span>Section 01 · Videos &amp; Docs</div>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;">
+          Two tracks. <strong style="color:var(--text)">General</strong> covers the fundamentals that apply on any platform: ICP, email writing, spam triggers, cold call practice. <strong style="color:var(--text)">Landbase</strong> is platform-specific: campaign setup, list building, LinkedIn integration, reporting, engagement filters, and the workarounds we've found that move the numbers.
+        </p>
+      </div>
+      <div>
+        <div class="section-label"><span class="bar"></span>Section 02 · Playbooks</div>
+        <p style="color:var(--muted);font-size:13px;line-height:1.6;">
+          Four standalone playbooks from the Martal Outbound Series. Cold calling, email and LinkedIn, objection handling, and list building inside Landbase. Read them in order to build the foundation. Come back to individual ones when something specific stops working.
+        </p>
+      </div>
+    </div>
+  </section>
+  <!-- ───────── VIDEOS & DOCS ───────── -->
+  <section class="panel">
+    <div class="panel-head">
+      <div class="panel-head-left">
+        <div class="bar"></div>
+        <div>
+          <h2>Videos &amp; Docs</h2>
+          <div class="sub">Section 01 · 23 items across two tracks</div>
+        </div>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Content tracks">
+        <button role="tab" class="tab track-btn is-active" data-track="general" aria-selected="true">General</button>
+        <button role="tab" class="tab track-btn" data-track="landbase" aria-selected="false">Landbase</button>
+      </div>
+    </div>
+    <div class="track is-active" id="track-general" data-render="general"></div>
+    <div class="track" id="track-landbase" data-render="landbase"></div>
+  </section>
+  <!-- ───────── PLAYBOOKS ───────── -->
+  <section class="panel">
+    <div class="panel-head">
+      <div class="panel-head-left">
+        <div class="bar"></div>
+        <div>
+          <h2>The Playbooks</h2>
+          <div class="sub">Section 02 · Martal Outbound Series — Volumes 01–04</div>
+        </div>
+      </div>
+    </div>
+    <div class="playbooks" id="playbooks-render"></div>
+  </section>
+  <!-- ───────── COLOPHON ───────── -->
+  <footer class="colophon">
+    <div>Martal Group · Operator's Toolkit · <span class="accent">Landbase Edition</span></div>
+    <div>External release · v.1</div>
+  </footer>
+</div>
+<!-- ───────── MODAL ───────── -->
+<div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-head-left">
+        <span class="pill" id="modal-type">DOC</span>
+        <div class="modal-title" id="modal-title">—</div>
+      </div>
+      <div class="modal-actions">
+        <a class="modal-btn" id="modal-open-tab" href="#" target="_blank" rel="noopener noreferrer">
+          <span>Open in new tab</span>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        </a>
+        <button class="modal-btn close" id="modal-close" aria-label="Close">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <iframe id="modal-iframe" src="about:blank" title="Embedded content" allow="autoplay; encrypted-media; fullscreen" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
   </div>
 </div>
-
 <script>
+/* ─────────────────────────────────────────────
+   DATA — Martal Operator's Toolkit (Landbase Edition)
+   ───────────────────────────────────────────── */
 const DATA = {
   general: [
-    {g:"FOUNDATIONS",t:"Defining ICP",k:"video",u:"https://www.youtube.com/watch?v=3h1NQTwulqs",d:"Breaks down what an Ideal Customer Profile really is and why it matters for outreach. Shows how to use client-provided ICP details to guide content and prospecting."},
-    {g:"FOUNDATIONS",t:"Email Writing Formulas for SDRs — Part 1",k:"doc",u:"https://docs.google.com/document/d/12DZ0AzFfvI4_No1juoVe9PItVNFwxMm8vWBYV9iVEHU/edit?usp=sharing",d:"Effective email outreach is essential for moving prospects through the funnel. Use these formulas to craft messages that resonate and drive specific outcomes."},
-    {g:"FOUNDATIONS",t:"Email Writing Formulas for SDRs — Part 2",k:"doc",u:"https://docs.google.com/document/d/15ss4_wvDWDHGxg6xmNRaD-Mje8fBZzxzoS8SkAMEXUc/edit?usp=sharing",d:"Continuation of Part 1 — more email formulas tuned to specific outcomes and audience segments."},
-    {g:"PRE-SEND CHECK",t:"Website Grader",k:"tool",u:"http://emailsubjectlinegrader.com/",d:"A free tool that grades your subject lines for email campaigns."},
-    {g:"PRE-SEND CHECK",t:"Spam Trigger Words",k:"article",u:"https://blog.hubspot.com/blog/tabid/6307/bid/30684/the-ultimate-list-of-email-spam-trigger-words.aspx",d:"The canonical list of spam trigger words and how to keep your emails out of the spam folder."},
-    {g:"COLD CALL TRAINING",t:"Cold Call Simulator (ChatGPT)",k:"tool",u:"https://chatgpt.com/g/g-6a0b150303f0819186fc37f390c8339c-cold-call-prospect-simulator",d:"Warm up before live dials with this GPT-powered cold-call simulator."},
-    {g:"COLD CALL TRAINING",t:"Area Codes for Better Calling",k:"doc",u:"https://docs.google.com/document/d/1UedniX8ONzE9I0DF_NDzDZtwohAEsW0V/edit?usp=sharing&ouid=111037955085653104390&rtpof=true&sd=true",d:"Calls from a local area code are up to 4× more likely to be answered. One-page reference with every state, its time zone, and the top area codes to use as your caller ID."}
+    { cat: 'Foundations', items: [
+      { type: 'VIDEO', title: 'Defining ICP', desc: "What an Ideal Customer Profile really is and why it's critical to successful outreach. How to use client-provided ICP details to understand who you're targeting and how that information guides content and prospecting strategy.", url: 'https://www.youtube.com/watch?v=3h1NQTwulqs' },
+      { type: 'DOC',   title: 'Email Writing Formulas for SDRs — Part 1', desc: "A complete guide to crafting effective email outreach. Formulas that resonate with prospects and move them through the sales funnel.", url: 'https://docs.google.com/document/d/12DZ0AzFfvI4_No1juoVe9PItVNFwxMm8vWBYV9iVEHU/edit?usp=sharing' },
+      { type: 'DOC',   title: 'Email Writing Formulas for SDRs — Part 2', desc: "Continuation of the complete guide. More patterns for engaging messages and consistent outcomes.", url: 'https://docs.google.com/document/d/15ss4_wvDWDHGxg6xmNRaD-Mje8fBZzxzoS8SkAMEXUc/edit?usp=sharing' },
+    ]},
+    { cat: 'Pre-Send Check', items: [
+      { type: 'TOOL',    title: 'Subject Line Grader', desc: "A web tool that scores subject lines for email campaigns before you hit send.", url: 'http://emailsubjectlinegrader.com/' },
+      { type: 'ARTICLE', title: 'Spam Trigger Words', desc: "How to keep your emails out of the spam folder — a working list of words and phrases to avoid.", url: 'https://blog.hubspot.com/blog/tabid/6307/bid/30684/the-ultimate-list-of-email-spam-trigger-words.aspx' },
+    ]},
+    { cat: 'Cold Call Training', items: [
+      { type: 'TOOL', title: 'Cold Call Simulator', desc: "Powered by ChatGPT. Warm up with a realistic prospect simulator before live dials.", url: 'https://chatgpt.com/g/g-6a0b150303f0819186fc37f390c8339c-cold-call-prospect-simulator' },
+      { type: 'DOC',  title: 'Area Codes for Better Calling', desc: "Calls from a local area code are up to 4× more likely to be answered. A one-page reference: every state, its time zone, and the top area codes to use as your caller ID.", url: 'https://docs.google.com/document/d/1UedniX8ONzE9I0DF_NDzDZtwohAEsW0V/edit?usp=sharing&ouid=111037955085653104390&rtpof=true&sd=true' },
+    ]},
   ],
   landbase: [
-    {g:"ACCOUNT SETUP",t:"Adding a Signature",k:"video",u:"https://www.loom.com/share/bdf7a915cd0e4e2ba5a62358ac137b6a",d:"How to add or edit your email signature for client domains in Landbase under settings."},
-    {g:"ACCOUNT SETUP",t:"Add a Phone Number to Start a Dial Session",k:"video",u:"https://www.loom.com/share/9c9b4c668e8340d5ae44768cebfa99e1?sid=156ffcb1-daef-4bc2-a324-cac13761e223",d:"Adding, rotating, and forwarding phone numbers in Landbase to support higher connect rates and manage call routing."},
-    {g:"ACCOUNT SETUP",t:"Adding Numbers for Call Campaigns",k:"video",u:"https://www.loom.com/share/931f0ae3af914dbe9d48c75582b346ed?sid=60125ed3-0f3c-4952-ac78-4e65691416eb",d:"How to add and manage phone numbers for outbound call campaigns: area code selection, browser/mobile setup, and call-back routing options."},
-    {g:"BUILDING LISTS",t:"Landbase Data Search: Step by Step",k:"doc",u:"https://docs.google.com/document/d/1a4cr2n6UFvMOEdzmppTXWn1vtfkHdfJL8b3X5ukuxX4/edit?usp=sharing",d:"The steps to build a targeted list in Landbase using an approved ICP."},
-    {g:"BUILDING LISTS",t:"LandBase ICP Search Filters",k:"doc",u:"https://docs.google.com/document/d/1SB70EekJBiHMrJF1wcBe8qTTLQfOh03qIIruHgRNVQQ/edit?usp=sharing",d:"Breaks down the key ICP search filters in LandBase and how reps use them to build cleaner, more targeted lead lists."},
-    {g:"BUILDING LISTS",t:"Broadening Your ICP in Landbase",k:"doc",u:"https://docs.google.com/document/d/1LKuEMNijXbBZfu2xrQCuzFwI2W_rmt4pQ32ZlMrr_Us/edit?usp=sharing",d:"Sometimes the initial ICP is too narrow to deliver volume. Here's how to expand it responsibly, without sacrificing quality, and keep clients aligned."},
-    {g:"BUILDING LISTS",t:"Expanding Industries within Landbase & LinkedIn",k:"sheet",u:"https://docs.google.com/spreadsheets/d/1kwuEL7Yy0fnAvWOfRA8xDD7siiO8adWXvlBHuYQlcJM/edit?usp=sharing",d:"Pairs searchable industries with broader ICP tags. Includes an approach for targeting Fintech, Martech, and HR Tech, which don't exist as direct industries."},
-    {g:"BUILDING LISTS",t:"Building Lead Lists: Imports vs. Website-Based Lists",k:"video",u:"https://www.loom.com/share/614c652b72dc41de8c724c5d4357853a",d:"Two ways to build prospect lists in LandBase — importing client-provided contacts and creating lists from company website URLs. Enrich, tag, and prep for email and dial campaigns."},
-    {g:"BUILDING LISTS",t:"Enriching Company Lists",k:"video",u:"https://www.loom.com/share/86f34bf6a25f4c72b6f87e5f555d1238?sid=7305646b-e863-488c-b198-a5206d439141",d:"Quickly enrich a company list in Landbase by pasting in URLs and saving under your client's company list for future use."},
-    {g:"LAUNCHING CAMPAIGNS",t:"Full Process: Campaign Launch",k:"video",u:"https://www.loom.com/share/84770c098ab94ffd871e32544a4338b1",d:"A holistic view of how to create email templates, generate your ICP, and launch your campaign in LandBase."},
-    {g:"LAUNCHING CAMPAIGNS",t:"Landbase LinkedIn Setup",k:"video",u:"https://www.loom.com/share/0203b81f07314c11a6ebb8b5f6e34411",d:"Creating campaigns in Landbase: connecting LinkedIn (max 4/day), AI messaging, templates aligned to pain points."},
-    {g:"LAUNCHING CAMPAIGNS",t:"Landbase LinkedIn Setup — Step by Step Doc",k:"doc",u:"https://docs.google.com/document/d/1MukxmJzaF7oXb2jfyegZMAASS1HGF-QA/edit?usp=sharing&ouid=111037955085653104390&rtpof=true&sd=true",d:"Step-by-step companion to the LinkedIn setup video: account connection, lead selection, campaign creation."},
-    {g:"LAUNCHING CAMPAIGNS",t:"Create a Follow-up / Re-engagement Email Campaign",k:"doc",u:"https://docs.google.com/document/d/1xOkwdvd-QCWLqw4dDytB185Qbcl7ItmZiXrwT71s96E/edit?usp=sharing",d:"Steps to effectively re-engage old prospects with a follow-up email campaign."},
-    {g:"CAMPAIGN MAINTENANCE",t:"Email Campaign Maintenance",k:"video",u:"https://www.loom.com/share/d67c467a0e1c4b40815e7a3870ed7046?sid=8578f335-15b8-4e4c-8a7e-9bceb00be233",d:"Check campaign performance in Landbase, add new leads using saved filters, and keep outreach fresh and active."},
-    {g:"CAMPAIGN MAINTENANCE",t:"Engagement Status Logic",k:"video",u:"https://www.loom.com/share/4da64d03fdbe4c7d95004d39e51bab48",d:"How the filtering system works for contacts in the engagement-status logic."},
-    {g:"REPLIES & REPORTING",t:"Managing LinkedIn Replies & Reporting",k:"video",u:"https://www.loom.com/share/3027b1a2e338453ea4e75a6f3c012e0c",d:"Access and manage LinkedIn campaign responses in Landbase and find reporting metrics."},
-    {g:"REPLIES & REPORTING",t:"Managing LinkedIn Replies & Reporting — Step by Step Doc",k:"doc",u:"https://docs.google.com/document/d/17ur-CXSkJ8S1DzihiXnv48IY406Ofrpo/edit?usp=sharing&ouid=111037955085653104390&rtpof=true&sd=true",d:"Step-by-step companion to the Replies & Reporting video."},
-    {g:"REPLIES & REPORTING",t:"How to Pull Lead & Activity Reports",k:"video",u:"https://www.loom.com/share/f7367c34f16f4241913f1c68d37018c3",d:"Efficiently pull MQL/SQL data, track outreach activity (calls, emails, LinkedIn), and prep clean lead sheets with exportable data from LandBase."}
+    { cat: 'Account Setup', items: [
+      { type: 'VIDEO', title: 'Adding a Signature', desc: "How to add or edit your email signature for client domains in Landbase under settings.", url: 'https://www.loom.com/share/bdf7a915cd0e4e2ba5a62358ac137b6a' },
+      { type: 'VIDEO', title: 'Add a Phone Number to Start a Dial Session', desc: "Adding, rotating, and forwarding phone numbers in Landbase to support higher connect rates and manage call routing.", url: 'https://www.loom.com/share/9c9b4c668e8340d5ae44768cebfa99e1?sid=156ffcb1-daef-4bc2-a324-cac13761e223' },
+      { type: 'VIDEO', title: 'Adding a Number for Call Campaigns', desc: "Managing phone numbers for outbound call campaigns — area code selection, browser/mobile setup, and call-back routing.", url: 'https://www.loom.com/share/931f0ae3af914dbe9d48c75582b346ed?sid=60125ed3-0f3c-4952-ac78-4e65691416eb' },
+    ]},
+    { cat: 'Building Lists', items: [
+      { type: 'DOC',   title: 'Landbase Data Search — Step by Step', desc: "The steps to build a targeted list in Landbase using an approved ICP.", url: 'https://docs.google.com/document/d/1a4cr2n6UFvMOEdzmppTXWn1vtfkHdfJL8b3X5ukuxX4/edit?usp=sharing' },
+      { type: 'DOC',   title: 'Landbase ICP Search Filters', desc: "The key ICP search filters in Landbase and how reps use them to build cleaner, more targeted lead lists.", url: 'https://docs.google.com/document/d/1SB70EekJBiHMrJF1wcBe8qTTLQfOh03qIIruHgRNVQQ/edit?usp=sharing' },
+      { type: 'DOC',   title: 'Broadening Your ICP in Landbase', desc: "When the initial ICP is too narrow to deliver volume. How to responsibly expand it without sacrificing quality, and keep clients aligned.", url: 'https://docs.google.com/document/d/1LKuEMNijXbBZfu2xrQCuzFwI2W_rmt4pQ32ZlMrr_Us/edit?usp=sharing' },
+      { type: 'DOC',   title: 'Expanding Industries — Landbase & LinkedIn', desc: "Simplifies industry selection by pairing searchable industries with broader ICP tags. Includes how to target categories like Fintech, Martech, and HR Tech that don't exist as direct industries.", url: 'https://docs.google.com/spreadsheets/d/1kwuEL7Yy0fnAvWOfRA8xDD7siiO8adWXvlBHuYQlcJM/edit?usp=sharing' },
+      { type: 'VIDEO', title: 'Building Lead Lists — Imports vs. Website-Based', desc: "Two ways to build prospect lists in Landbase: importing client-provided contacts and creating lists from company website URLs. How to enrich, tag, and prepare for email and dial campaigns.", url: 'https://www.loom.com/share/614c652b72dc41de8c724c5d4357853a' },
+      { type: 'VIDEO', title: 'Enriching Company Lists', desc: "Quickly enrich a company list in Landbase by pasting in URLs and saving it under your client's company list for future use.", url: 'https://www.loom.com/share/86f34bf6a25f4c72b6f87e5f555d1238?sid=7305646b-e863-488c-b198-a5206d439141' },
+    ]},
+    { cat: 'Launching Campaigns', items: [
+      { type: 'VIDEO', title: 'Full Process — Campaign Launch', desc: "A holistic view of creating email templates, generating your ICP, and launching your campaign using Landbase.", url: 'https://www.loom.com/share/84770c098ab94ffd871e32544a4338b1' },
+      { type: 'VIDEO', title: 'Landbase × LinkedIn Setup', desc: "Connecting your LinkedIn account, selecting leads, and creating campaigns. AI messaging and templates aligned to pain points and value props. Reminder: four account connections per day max.", url: 'https://www.loom.com/share/0203b81f07314c11a6ebb8b5f6e34411' },
+      { type: 'DOC',   title: 'Landbase × LinkedIn Setup — Step by Step', desc: "Written walkthrough: connecting your LinkedIn account, selecting leads, and creating campaigns end-to-end.", url: 'https://docs.google.com/document/d/1MukxmJzaF7oXb2jfyegZMAASS1HGF-QA/edit?usp=sharing&ouid=111037955085653104390&rtpof=true&sd=true' },
+      { type: 'DOC',   title: 'Create a Follow-up / Re-engagement Campaign', desc: "Steps to effectively re-engage old prospects with a follow-up email campaign.", url: 'https://docs.google.com/document/d/1xOkwdvd-QCWLqw4dDytB185Qbcl7ItmZiXrwT71s96E/edit?usp=sharing' },
+    ]},
+    { cat: 'Campaign Maintenance', items: [
+      { type: 'VIDEO', title: 'Email Campaign Maintenance', desc: "Check campaign performance in Landbase, add new leads using saved filters, and track updates to keep outreach fresh.", url: 'https://www.loom.com/share/d67c467a0e1c4b40815e7a3870ed7046?sid=8578f335-15b8-4e4c-8a7e-9bceb00be233' },
+      { type: 'VIDEO', title: 'Engagement Status Logic', desc: "How the filtering system works for contacts in our logic setup.", url: 'https://www.loom.com/share/4da64d03fdbe4c7d95004d39e51bab48' },
+    ]},
+    { cat: 'Replies & Reporting', items: [
+      { type: 'VIDEO', title: 'Managing LinkedIn Replies & Reporting', desc: "How to access and manage your LinkedIn campaign responses in Landbase, and where to find reporting metrics.", url: 'https://www.loom.com/share/3027b1a2e338453ea4e75a6f3c012e0c' },
+      { type: 'DOC',   title: 'Managing LinkedIn Replies & Reporting — Step by Step', desc: "Written walkthrough: accessing and managing LinkedIn campaign responses in Landbase, plus reporting metrics.", url: 'https://docs.google.com/document/d/17ur-CXSkJ8S1DzihiXnv48IY406Ofrpo/edit?usp=sharing&ouid=111037955085653104390&rtpof=true&sd=true' },
+      { type: 'VIDEO', title: 'Pull Lead & Activity Reports', desc: "Efficiently pull MQL/SQL data, track outreach activity (calls, emails, LinkedIn), and prep clean lead sheets with exportable data from Landbase.", url: 'https://www.loom.com/share/f7367c34f16f4241913f1c68d37018c3' },
+    ]},
   ],
   playbooks: [
-    {t:"Cold Calling Playbook",u:"https://drive.google.com/file/d/1SyPz5_v_L9BKYCZ04UO7ukSCx1anXNuH/view?usp=drive_link",d:"The foundation of the Martal Outbound Series. Mindset, structure, scripts, and habits behind consistent cold-calling results."},
-    {t:"Email & LinkedIn Playbook",u:"https://drive.google.com/file/d/1C8AsLZoKO_T27ueQ8GBzBwu6aRf03Wyu/view?usp=drive_link",d:"The two async channels that run alongside cold calling. Lead with the problem, not the product. Shorter, more curious, and far more likely to get a response."},
-    {t:"Objection Handling Playbook",u:"https://drive.google.com/file/d/1SWfUCVZLo9Yt7l-iIy0zRJo3HmGGrGFe/view?usp=drive_link",d:"Objections by stage: early resistance before the conversation, mid-call objections during live conversations, late-stage objections as prospects near a decision."},
-    {t:"The List-Building Playbook",u:"https://drive.google.com/file/d/1natBjUSjMGecndmCct3KXZ7QVqb1tUsD/view?usp=drive_link",d:"Built around two questions: 'How do I find enough relevant companies?' and 'Why don't the industries match my client's ICP?' Both are filter-logic opportunities, not Landbase limitations."}
-  ]
+    { vol: 'Vol. 01', title: 'Cold Calling', desc: "The foundation of the Martal Outbound Series. The mindset, structure, scripts, and habits behind consistent cold calling results.", url: 'https://drive.google.com/file/d/1SyPz5_v_L9BKYCZ04UO7ukSCx1anXNuH/view?usp=drive_link' },
+    { vol: 'Vol. 02', title: 'Email & LinkedIn', desc: "Builds on Vol. 01 for the two async channels that run alongside cold calling. The biggest mistake reps make: treating them like a pitch delivery system. This playbook reframes both as conversation starters.", url: 'https://drive.google.com/file/d/1C8AsLZoKO_T27ueQ8GBzBwu6aRf03Wyu/view?usp=drive_link' },
+    { vol: 'Vol. 03', title: 'Objection Handling', desc: "Objections show up on every channel, at every stage. Organized by where you are in the process: early resistance before the conversation starts, mid-call objections during a live call, and late-stage objections near a decision.", url: 'https://drive.google.com/file/d/1SWfUCVZLo9Yt7l-iIy0zRJo3HmGGrGFe/view?usp=drive_link' },
+    { vol: 'Vol. 04', title: 'List Building', desc: "Built around two questions: how to find enough relevant companies, and why industries don't match the client's ICP. Both are solvable — almost never a Landbase limitation. Filter logic opportunities waiting to be unlocked.", url: 'https://drive.google.com/file/d/1natBjUSjMGecndmCct3KXZ7QVqb1tUsD/view?usp=drive_link' },
+  ],
 };
-
-// ---------- URL ROUTING ----------
-// Returns {url, mode} where mode is 'embed' or 'newtab'
-function routeUrl(u){
-  try{
-    const x = new URL(u);
-    const h = x.hostname.replace(/^www\./,'');
-    // YouTube → embed
-    if(h.includes('youtube.com') || h === 'youtu.be'){
-      let id = '';
-      if(h === 'youtu.be') id = x.pathname.slice(1);
-      else if(x.searchParams.get('v')) id = x.searchParams.get('v');
-      else if(x.pathname.startsWith('/embed/')) id = x.pathname.split('/')[2];
-      if(id) return {url:`https://www.youtube.com/embed/${id}`, mode:'embed'};
-    }
-    // Loom → embed
-    if(h.includes('loom.com')){
-      const m = x.pathname.match(/\/share\/([a-zA-Z0-9]+)/);
-      if(m) return {url:`https://www.loom.com/embed/${m[1]}`, mode:'embed'};
-    }
-    // Google Drive files → preview (PDFs)
-    if(h.includes('drive.google.com')){
-      const m = x.pathname.match(/\/file\/d\/([^/]+)/);
-      if(m) return {url:`https://drive.google.com/file/d/${m[1]}/preview`, mode:'embed'};
-    }
-    // Google Docs/Sheets — embed via /preview
-    if(h.includes('docs.google.com')){
-      // try to convert /edit to /preview
-      const swapped = u.replace(/\/edit[^?#]*/, '/preview').replace(/\?.*$/,'');
-      return {url:swapped, mode:'embed'};
-    }
-    // Default: new tab (HubSpot, ChatGPT GPTs, raw web tools, etc — these break in iframes)
-    return {url:u, mode:'newtab'};
-  }catch(e){
-    return {url:u, mode:'newtab'};
-  }
+/* ─────────────────────────────────────────────
+   URL ROUTING — embed vs new tab
+   Rules (confirmed against real URLs):
+     NEW TAB  — HubSpot, LinkedIn, emailsubjectlinegrader.com, ChatGPT,
+                Google Drive *folder* links, and any unknown/malformed URL.
+     EMBED    — Google Docs, Sheets, individual Drive files, Loom, YouTube.
+   ───────────────────────────────────────────── */
+const NEW_TAB_HOSTS = [
+  'hubspot.com', 'blog.hubspot.com',
+  'linkedin.com',
+  'emailsubjectlinegrader.com',
+  'chatgpt.com', 'chat.openai.com',
+];
+const EMBED_HOSTS = [
+  'docs.google.com',
+  'drive.google.com',
+  'loom.com',
+  'youtube.com',
+  'youtu.be',
+];
+function shouldOpenInNewTab(url) {
+  try {
+    const u = new URL(url);
+    const host = u.hostname.toLowerCase();
+    if (NEW_TAB_HOSTS.some(h => host === h || host.endsWith('.' + h))) return true;
+    if ((host === 'drive.google.com' || host.endsWith('.drive.google.com'))
+        && /\/drive\/folders\//.test(u.pathname)) return true;
+    if (EMBED_HOSTS.some(h => host === h || host.endsWith('.' + h))) return false;
+    return true;
+  } catch { return true; }
 }
-
-// ---------- RENDER ----------
-function groupBy(items, key){
-  const map = new Map();
-  for(const i of items){
-    if(!map.has(i[key])) map.set(i[key], []);
-    map.get(i[key]).push(i);
-  }
-  return map;
-}
-
-function renderTrack(track){
-  const root = document.getElementById('track-' + track);
-  root.innerHTML = '';
-  const groups = groupBy(DATA[track], 'g');
-  for(const [groupName, items] of groups){
-    const groupEl = document.createElement('div');
-    groupEl.innerHTML = `<div class="group-label">${groupName}</div>`;
-    const cards = document.createElement('div');
-    cards.className = 'cards';
-    for(const item of items){
-      const btn = document.createElement('button');
-      btn.className = 'card';
-      btn.innerHTML = `
-        <div class="row">
-          <span class="type type-${item.k}">${item.k}</span>
-          <span class="arrow">↗</span>
-        </div>
-        <div class="title">${item.t}</div>
-        <div class="desc">${item.d}</div>
-      `;
-      btn.addEventListener('click', () => openItem(item));
-      cards.appendChild(btn);
+function getEmbedUrl(url) {
+  try {
+    const u = new URL(url);
+    const host = u.hostname.toLowerCase();
+    if (host.includes('youtube.com')) {
+      const id = u.searchParams.get('v');
+      if (id) return `https://www.youtube.com/embed/${id}`;
     }
-    groupEl.appendChild(cards);
-    root.appendChild(groupEl);
-  }
+    if (host === 'youtu.be') {
+      const id = u.pathname.slice(1);
+      if (id) return `https://www.youtube.com/embed/${id}`;
+    }
+    if (host.includes('loom.com')) {
+      const m = u.pathname.match(/\/share\/([a-f0-9]+)/i);
+      if (m) return `https://www.loom.com/embed/${m[1]}`;
+    }
+    if (host === 'drive.google.com') {
+      const m = u.pathname.match(/\/file\/d\/([^\/]+)/);
+      if (m) return `https://drive.google.com/file/d/${m[1]}/preview`;
+    }
+    if (host === 'docs.google.com') {
+      return url.split('?')[0].replace(/\/edit$/, '/preview');
+    }
+    return url;
+  } catch { return url; }
 }
-
-function renderPlaybooks(){
-  const root = document.getElementById('pb-grid');
-  root.innerHTML = '';
-  for(const p of DATA.playbooks){
-    const btn = document.createElement('button');
-    btn.className = 'pb';
-    btn.innerHTML = `
-      <div class="pk">Playbook · PDF</div>
-      <div class="pt">${p.t}</div>
-      <div class="pd">${p.d}</div>
-    `;
-    btn.addEventListener('click', () => openItem(p));
-    root.appendChild(btn);
-  }
+/* ─────────────────────────────────────────────
+   RENDER
+   ───────────────────────────────────────────── */
+function pillClass(t) {
+  return ({ DOC:'is-doc', VIDEO:'is-video', TOOL:'is-tool', ARTICLE:'is-article' })[t] || 'is-doc';
 }
-
-// ---------- MODAL ----------
-let currentUrl = '';
-
-function openItem(item){
-  const routed = routeUrl(item.u);
-  currentUrl = item.u;
-  if(routed.mode === 'newtab'){
-    window.open(item.u, '_blank', 'noopener,noreferrer');
-    return;
-  }
-  document.getElementById('modal-title').textContent = item.t;
-  document.getElementById('modal-frame').src = routed.url;
-  document.getElementById('modal').classList.add('open');
+function arrowSvg() {
+  return `<svg class="item-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .15s,color .15s"><path d="M7 17L17 7M9 7h8v8"/></svg>`;
+}
+function renderTrack(trackKey) {
+  return DATA[trackKey].map(group => `
+    <div class="cat-group">
+      <div class="cat-bar">
+        <span class="bar"></span>
+        <h3>${group.cat}</h3>
+        <span class="count">${String(group.items.length).padStart(2,'0')} ${group.items.length === 1 ? 'ITEM' : 'ITEMS'}</span>
+      </div>
+      <div class="items">
+        ${group.items.map(it => `
+          <button class="item"
+                  data-url="${escapeAttr(it.url)}"
+                  data-title="${escapeAttr(it.title)}"
+                  data-type="${it.type}">
+            <div class="item-head">
+              <span class="pill ${pillClass(it.type)}">${it.type}</span>
+              ${arrowSvg()}
+            </div>
+            <h4 class="item-title">${escapeHtml(it.title)}</h4>
+            <p class="item-desc">${escapeHtml(it.desc)}</p>
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+function renderPlaybooks() {
+  return DATA.playbooks.map(p => `
+    <button class="playbook"
+            data-url="${escapeAttr(p.url)}"
+            data-title="${escapeAttr(p.title + ' Playbook')}"
+            data-type="DOC">
+      <div class="playbook-vol">${p.vol}</div>
+      <h3 class="playbook-title">${escapeHtml(p.title)}</h3>
+      <p class="playbook-desc">${escapeHtml(p.desc)}</p>
+      <span class="playbook-cta">
+        Open playbook
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform .15s"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </span>
+    </button>
+  `).join('');
+}
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' })[c]);
+}
+function escapeAttr(s) { return escapeHtml(s); }
+/* ─────────────────────────────────────────────
+   MODAL
+   ───────────────────────────────────────────── */
+const overlay = document.getElementById('modal-overlay');
+const modalIframe = document.getElementById('modal-iframe');
+const modalTitle = document.getElementById('modal-title');
+const modalType = document.getElementById('modal-type');
+const modalOpenTab = document.getElementById('modal-open-tab');
+const modalClose = document.getElementById('modal-close');
+function openModal({ url, title, type }) {
+  modalTitle.textContent = title;
+  modalType.textContent = type;
+  modalType.className = 'pill ' + pillClass(type);
+  modalOpenTab.href = url;
+  modalIframe.src = getEmbedUrl(url);
+  overlay.classList.add('is-open');
   document.body.style.overflow = 'hidden';
 }
-
-function closeModal(){
-  document.getElementById('modal').classList.remove('open');
-  document.getElementById('modal-frame').src = 'about:blank';
+function closeModal() {
+  overlay.classList.remove('is-open');
+  modalIframe.src = 'about:blank';
   document.body.style.overflow = '';
 }
-
-function openInNewTab(){
-  if(currentUrl) window.open(currentUrl, '_blank', 'noopener,noreferrer');
-}
-
-document.getElementById('modal').addEventListener('click', e => {
-  if(e.target.id === 'modal') closeModal();
+modalClose.addEventListener('click', closeModal);
+overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal();
 });
-document.addEventListener('keydown', e => {
-  if(e.key === 'Escape') closeModal();
+/* ─────────────────────────────────────────────
+   ITEM CLICKS (delegated)
+   ───────────────────────────────────────────── */
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-url]');
+  if (!btn) return;
+  const url = btn.dataset.url;
+  const title = btn.dataset.title;
+  const type = btn.dataset.type;
+  if (shouldOpenInNewTab(url)) {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  } else {
+    openModal({ url, title, type });
+  }
 });
-
-// ---------- TABS ----------
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    const track = tab.dataset.track;
-    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t === tab));
-    document.getElementById('track-general').hidden = (track !== 'general');
-    document.getElementById('track-landbase').hidden = (track !== 'landbase');
+/* ─────────────────────────────────────────────
+   TRACK TABS
+   ───────────────────────────────────────────── */
+document.querySelectorAll('.track-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const track = btn.dataset.track;
+    document.querySelectorAll('.track-btn').forEach(b => {
+      const active = b === btn;
+      b.classList.toggle('is-active', active);
+      b.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    document.querySelectorAll('.track').forEach(t => {
+      t.classList.toggle('is-active', t.id === `track-${track}`);
+    });
   });
 });
-
-// ---------- INIT ----------
-renderTrack('general');
-renderTrack('landbase');
-renderPlaybooks();
-
-const totalVD = DATA.general.length + DATA.landbase.length;
-const totalPB = DATA.playbooks.length;
-document.getElementById('stat-total').textContent = totalVD + totalPB;
-document.getElementById('stat-vd').textContent = totalVD;
-document.getElementById('stat-pb').textContent = totalPB;
-document.getElementById('updated').textContent = new Date().toLocaleDateString('en-US', {month:'short', year:'numeric'});
+/* ─────────────────────────────────────────────
+   INIT
+   ───────────────────────────────────────────── */
+document.querySelectorAll('[data-render]').forEach(el => {
+  el.innerHTML = renderTrack(el.dataset.render);
+});
+document.getElementById('playbooks-render').innerHTML = renderPlaybooks();
 </script>
-
 </body>
 </html>
