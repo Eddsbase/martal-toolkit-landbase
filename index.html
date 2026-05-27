@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Martal Operator's Toolkit — Landbase Edition</title>
+<meta name="description" content="Scaled-down, externally-shareable Operator's Toolkit. Videos, docs, and playbooks for Landbase outbound.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0a;--s1:#141414;--s2:#1a1a1a;--s3:#222222;--s4:#2a2a2a;
+  --b1:rgba(255,255,255,.06);--b2:rgba(255,255,255,.10);--b3:rgba(255,255,255,.16);
+  --g:#8ed122;--g2:#a0e034;--g-a:rgba(142,209,34,.10);--g-bd:rgba(142,209,34,.20);
+  --t:#ffffff;--t2:#d4d4d4;--t3:#9ca3af;--t4:#6b7280;
+  --f:'Outfit',system-ui,sans-serif;--fb:'DM Sans',system-ui,sans-serif;--m:'DM Mono',ui-monospace,monospace;
+  --r:14px;--r2:18px;--maxw:1240px;
+}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{font-family:var(--fb);background:var(--bg);color:var(--t);line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100vh;overflow-x:hidden}
+a{color:var(--g);text-decoration:none;transition:color .15s}
+a:hover{color:var(--g2)}
+::selection{background:#8ed12233;color:#fff}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:#3a3a3a}
+
+/* NAV / TOPBAR */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(10,10,10,.85);backdrop-filter:blur(20px) saturate(1.6);-webkit-backdrop-filter:blur(20px) saturate(1.6);border-bottom:1px solid var(--b1)}
+.topbar-in{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 28px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-mark{width:36px;height:36px;background:var(--g);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.brand-mark svg{width:22px;height:22px;display:block}
+.brand-text{display:flex;flex-direction:column;line-height:1.15}
+.brand-text .b1{font-family:var(--f);font-weight:800;font-size:.92rem;letter-spacing:-.01em;color:var(--t)}
+.brand-text .b2{font-family:var(--m);font-size:.65rem;color:var(--t3);text-transform:uppercase;letter-spacing:.12em;margin-top:2px}
+.topbar-meta{display:flex;align-items:center;gap:18px}
+.topbar-meta .pill{font-family:var(--m);font-size:.62rem;color:var(--g);background:var(--g-a);border:1px solid var(--g-bd);padding:5px 10px;border-radius:6px;text-transform:uppercase;letter-spacing:.1em;font-weight:500}
+.topbar-meta .meta{font-family:var(--m);font-size:.65rem;color:var(--t4);text-transform:uppercase;letter-spacing:.1em}
+@media (max-width:680px){.topbar-meta .meta{display:none}}
+
+/* LAYOUT */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+.panel{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);padding:32px;margin-top:24px;position:relative;overflow:hidden}
+.panel:first-of-type{margin-top:32px}
+
+/* SECTION LABELS */
+.s-label{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.s-label .bar{display:flex;gap:2px}
+.s-label .bar span{width:3px;height:12px;background:var(--g);display:block}
+.s-label .txt{font-family:var(--m);font-size:.7rem;color:var(--t3);text-transform:uppercase;letter-spacing:.16em;font-weight:500}
+
+/* HERO */
+.hero h1{font-family:var(--f);font-weight:900;font-size:clamp(2rem,5vw,3.4rem);line-height:1.02;letter-spacing:-.035em;color:var(--t);margin-bottom:18px}
+.hero h1 em{font-style:normal;color:var(--g)}
+.hero .lede{font-size:1.05rem;color:var(--t2);max-width:760px;line-height:1.55}
+.hero .lede + .lede{margin-top:12px;color:var(--t3)}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:30px}
+@media (max-width:840px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:20px 18px 24px;position:relative;overflow:hidden}
+.stat::after{content:'';position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,transparent,var(--g),transparent);opacity:.6}
+.stat .k{font-family:var(--m);font-size:.6rem;color:var(--t4);text-transform:uppercase;letter-spacing:.14em;font-weight:500;margin-bottom:10px}
+.stat .v{font-family:var(--f);font-weight:800;font-size:2.1rem;color:var(--t);letter-spacing:-.03em;line-height:1}
+.stat .s{font-family:var(--fb);font-size:.78rem;color:var(--t3);margin-top:6px}
+
+/* TABS */
+.tabs{display:flex;gap:4px;background:var(--s2);border:1px solid var(--b1);border-radius:10px;padding:4px;margin:8px 0 24px;width:fit-content;max-width:100%;overflow-x:auto}
+.tab{font-family:var(--m);font-size:.7rem;font-weight:500;text-transform:uppercase;letter-spacing:.12em;color:var(--t3);background:transparent;border:none;padding:9px 16px;border-radius:7px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.tab:hover{color:var(--t2)}
+.tab.active{background:var(--g);color:#0a0a0a;font-weight:600}
+
+/* CARD GRID */
+.groups{display:flex;flex-direction:column;gap:28px}
+.group-label{font-family:var(--m);font-size:.65rem;color:var(--g);text-transform:uppercase;letter-spacing:.16em;font-weight:500;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.group-label::before{content:'';width:14px;height:1px;background:var(--g);display:block}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.card{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:18px 18px 16px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;text-align:left;font-family:var(--fb);color:var(--t);position:relative;overflow:hidden}
+.card:hover{background:var(--s3);border-color:var(--b2);transform:translateY(-1px)}
+.card .row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.card .type{font-family:var(--m);font-size:.58rem;text-transform:uppercase;letter-spacing:.14em;padding:3px 7px;border-radius:4px;font-weight:500}
+.type-video{color:#8ed122;background:rgba(142,209,34,.10);border:1px solid rgba(142,209,34,.18)}
+.type-doc{color:#7dd3fc;background:rgba(125,211,252,.10);border:1px solid rgba(125,211,252,.18)}
+.type-sheet{color:#86efac;background:rgba(134,239,172,.10);border:1px solid rgba(134,239,172,.18)}
+.type-article{color:#fcd34d;background:rgba(252,211,77,.10);border:1px solid rgba(252,211,77,.18)}
+.type-tool{color:#c4b5fd;background:rgba(196,181,253,.10);border:1px solid rgba(196,181,253,.18)}
+.card .arrow{font-family:var(--m);color:var(--t4);transition:all .15s}
+.card:hover .arrow{color:var(--g);transform:translate(2px,-2px)}
+.card .title{font-family:var(--f);font-size:1rem;font-weight:600;letter-spacing:-.01em;line-height:1.25;color:var(--t);margin-bottom:8px}
+.card .desc{font-size:.83rem;color:var(--t3);line-height:1.5;flex:1}
+
+/* PLAYBOOKS */
+.pb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.pb{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:22px 20px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:10px;text-align:left;font-family:var(--fb);color:var(--t);position:relative;overflow:hidden}
+.pb:hover{background:var(--s3);border-color:var(--b2)}
+.pb::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--g);opacity:.7}
+.pb .pk{font-family:var(--m);font-size:.58rem;color:var(--g);text-transform:uppercase;letter-spacing:.14em;font-weight:500}
+.pb .pt{font-family:var(--f);font-size:1.1rem;font-weight:700;letter-spacing:-.01em;color:var(--t);line-height:1.2}
+.pb .pd{font-size:.82rem;color:var(--t3);line-height:1.5}
+
+/* COLOPHON */
+.colophon{margin-top:24px;margin-bottom:48px;padding:24px 32px;background:var(--s1);border:1px solid var(--b1);border-radius:var(--r2);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;font-family:var(--m);font-size:.7rem;color:var(--t4);text-transform:uppercase;letter-spacing:.12em}
+.colophon a{color:var(--t3)}
+.colophon a:hover{color:var(--g)}
+
+/* MODAL */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:24px}
+.modal.open{display:flex}
+.modal-box{background:var(--s1);border:1px solid var(--b2);border-radius:var(--r2);width:100%;max-width:1100px;height:min(78vh,800px);position:relative;display:flex;flex-direction:column;overflow:hidden}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--b1);gap:14px}
+.modal-head .t{font-family:var(--f);font-weight:600;font-size:.95rem;color:var(--t);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.modal-head .actions{display:flex;gap:6px;flex-shrink:0}
+.modal-head button{font-family:var(--m);font-size:.62rem;text-transform:uppercase;letter-spacing:.12em;color:var(--t3);background:transparent;border:1px solid var(--b1);border-radius:6px;padding:7px 12px;cursor:pointer;transition:all .15s;font-weight:500}
+.modal-head button:hover{color:var(--t);border-color:var(--b3);background:var(--s3)}
+.modal-frame{flex:1;background:var(--bg);border:none;width:100%}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M 16 84 L 50 18 L 84 84" stroke="#0a0a0a" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      </div>
+      <div class="brand-text">
+        <div class="b1">Martal Operator's Toolkit</div>
+        <div class="b2">Landbase Edition · External</div>
+      </div>
+    </div>
+    <div class="topbar-meta">
+      <span class="pill">Open Access</span>
+      <span class="meta">v1.0</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="panel hero">
+    <div class="s-label"><div class="bar"><span></span><span></span><span></span></div><div class="txt">§ 00 · Overview</div></div>
+    <h1>Everything our top SDRs <em>use day-to-day.</em></h1>
+    <p class="lede"><strong>Videos &amp; Docs.</strong> Two tracks. <em style="color:var(--g);font-style:normal">General</em> covers the fundamentals that apply on any platform — ICP, email writing, spam triggers, cold call practice. <em style="color:var(--g);font-style:normal">Landbase</em> is platform-specific: campaign setup, list building, LinkedIn integration, reporting, and the workarounds we've found that move the numbers.</p>
+    <p class="lede"><strong>Playbooks.</strong> Four standalone playbooks from the Martal Outbound Series. Cold calling, email and LinkedIn, objection handling, and list building inside Landbase. Read them in order to build the foundation — come back to individual ones when something specific stops working.</p>
+
+    <div class="stats">
+      <div class="stat"><div class="k">Total Items</div><div class="v" id="stat-total">—</div><div class="s">Videos · Docs · Playbooks</div></div>
+      <div class="stat"><div class="k">Videos &amp; Docs</div><div class="v" id="stat-vd">—</div><div class="s">General + Landbase</div></div>
+      <div class="stat"><div class="k">Playbooks</div><div class="v" id="stat-pb">—</div><div class="s">Outbound series</div></div>
+      <div class="stat"><div class="k">Access</div><div class="v" style="font-size:1.5rem">Open</div><div class="s">No sign-in required</div></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="s-label"><div class="bar"><span></span><span></span><span></span></div><div class="txt">§ 01 · Videos &amp; Docs</div></div>
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-track="general" role="tab">General</button>
+      <button class="tab" data-track="landbase" role="tab">Landbase</button>
+    </div>
+    <div id="track-general" class="groups"></div>
+    <div id="track-landbase" class="groups" hidden></div>
+  </section>
+
+  <section class="panel">
+    <div class="s-label"><div class="bar"><span></span><span></span><span></span></div><div class="txt">§ 02 · Playbooks</div></div>
+    <div class="pb-grid" id="pb-grid"></div>
+  </section>
+
+</main>
+
+<footer class="colophon wrap">
+  <div>Martal Group · Operator's Toolkit · Landbase Edition</div>
+  <div>External · Public · Updated <span id="updated"></span></div>
+</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="t" id="modal-title"></div>
+      <div class="actions">
+        <button onclick="openInNewTab()">Open in tab ↗</button>
+        <button onclick="closeModal()">Close ✕</button>
+      </div>
+    </div>
+    <iframe class="modal-frame" id="modal-frame" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+  </div>
+</div>
+
+<script>
+const DATA = {
+  general: [
+    {g:"FOUNDATIONS",t:"Defining ICP",k:"video",u:"https://www.youtube.com/watch?v=3h1NQTwulqs",d:"Breaks down what an Ideal Customer Profile really is and why it matters for outreach. Shows how to use client-provided ICP details to guide content and prospecting."},
+    {g:"FOUNDATIONS",t:"Email Writing Formulas for SDRs — Part 1",k:"doc",u:"https://docs.google.com/document/d/12DZ0AzFfvI4_No1juoVe9PItVNFwxMm8vWBYV9iVEHU/edit?usp=sharing",d:"Effective email outreach is essential for moving prospects through the funnel. Use these formulas to craft messages that resonate and drive specific outcomes."},
+    {g:"FOUNDATIONS",t:"Email Writing Formulas for SDRs — Part 2",k:"doc",u:"https://docs.google.com/document/d/15ss4_wvDWDHGxg6xmNRaD-Mje8fBZzxzoS8SkAMEXUc/edit?usp=sharing",d:"Continuation of Part 1 — more email formulas tuned to specific outcomes and audience segments."},
+    {g:"PRE-SEND CHECK",t:"Website Grader",k:"tool",u:"http://emailsubjectlinegrader.com/",d:"A free tool that grades your subject lines for email campaigns."},
+    {g:"PRE-SEND CHECK",t:"Spam Trigger Words",k:"article",u:"https://blog.hubspot.com/blog/tabid/6307/bid/30684/the-ultimate-list-of-email-spam-trigger-words.aspx",d:"The canonical list of spam trigger words and how to keep your emails out of the spam folder."},
+    {g:"COLD CALL TRAINING",t:"Cold Call Simulator (ChatGPT)",k:"tool",u:"https://chatgpt.com/g/g-6a0b150303f0819186fc37f390c8339c-cold-call-prospect-simulator",d:"Warm up before live dials with this GPT-powered cold-call simulator."},
+    {g:"COLD CALL TRAINING",t:"Area Codes for Better Calling",k:"doc",u:"https://docs.google.com/document/d/1UedniX8ONzE9I0DF_NDzDZtwohAEsW0V/edit?usp=sharing&ouid=111037955085653104390&rtpof=true&sd=true",d:"Calls from a local area code are up to 4× more likely to be answered. One-page reference with every state, its time zone, and the top area codes to use as your caller ID."}
+  ],
+  landbase: [
+    {g:"ACCOUNT SETUP",t:"Adding a Signature",k:"video",u:"https://www.loom.com/share/bdf7a915cd0e4e2ba5a62358ac137b6a",d:"How to add or edit your email signature for client domains in Landbase under settings."},
+    {g:"ACCOUNT SETUP",t:"Add a Phone Number to Start a Dial Session",k:"video",u:"https://www.loom.com/share/9c9b4c668e8340d5ae44768cebfa99e1?sid=156ffcb1-daef-4bc2-a324-cac13761e223",d:"Adding, rotating, and forwarding phone numbers in Landbase to support higher connect rates and manage call routing."},
+    {g:"ACCOUNT SETUP",t:"Adding Numbers for Call Campaigns",k:"video",u:"https://www.loom.com/share/931f0ae3af914dbe9d48c75582b346ed?sid=60125ed3-0f3c-4952-ac78-4e65691416eb",d:"How to add and manage phone numbers for outbound call campaigns: area code selection, browser/mobile setup, and call-back routing options."},
+    {g:"BUILDING LISTS",t:"Landbase Data Search: Step by Step",k:"doc",u:"https://docs.google.com/document/d/1a4cr2n6UFvMOEdzmppTXWn1vtfkHdfJL8b3X5ukuxX4/edit?usp=sharing",d:"The steps to build a targeted list in Landbase using an approved ICP."},
+    {g:"BUILDING LISTS",t:"LandBase ICP Search Filters",k:"doc",u:"https://docs.google.com/document/d/1SB70EekJBiHMrJF1wcBe8qTTLQfOh03qIIruHgRNVQQ/edit?usp=sharing",d:"Breaks down the key ICP search filters in LandBase and how reps use them to build cleaner, more targeted lead lists."},
+    {g:"BUILDING LISTS",t:"Broadening Your ICP in Landbase",k:"doc",u:"https://docs.google.com/document/d/1LKuEMNijXbBZfu2xrQCuzFwI2W_rmt4pQ32ZlMrr_Us/edit?usp=sharing",d:"Sometimes the initial ICP is too narrow to deliver volume. Here's how to expand it responsibly, without sacrificing quality, and keep clients aligned."},
+    {g:"BUILDING LISTS",t:"Expanding Industries within Landbase & LinkedIn",k:"sheet",u:"https://docs.google.com/spreadsheets/d/1kwuEL7Yy0fnAvWOfRA8xDD7siiO8adWXvlBHuYQlcJM/edit?usp=sharing",d:"Pairs searchable industries with broader ICP tags. Includes an approach for targeting Fintech, Martech, and HR Tech, which don't exist as direct industries."},
+    {g:"BUILDING LISTS",t:"Building Lead Lists: Imports vs. Website-Based Lists",k:"video",u:"https://www.loom.com/share/614c652b72dc41de8c724c5d4357853a",d:"Two ways to build prospect lists in LandBase — importing client-provided contacts and creating lists from company website URLs. Enrich, tag, and prep for email and dial campaigns."},
+    {g:"BUILDING LISTS",t:"Enriching Company Lists",k:"video",u:"https://www.loom.com/share/86f34bf6a25f4c72b6f87e5f555d1238?sid=7305646b-e863-488c-b198-a5206d439141",d:"Quickly enrich a company list in Landbase by pasting in URLs and saving under your client's company list for future use."},
+    {g:"LAUNCHING CAMPAIGNS",t:"Full Process: Campaign Launch",k:"video",u:"https://www.loom.com/share/84770c098ab94ffd871e32544a4338b1",d:"A holistic view of how to create email templates, generate your ICP, and launch your campaign in LandBase."},
+    {g:"LAUNCHING CAMPAIGNS",t:"Landbase LinkedIn Setup",k:"video",u:"https://www.loom.com/share/0203b81f07314c11a6ebb8b5f6e34411",d:"Creating campaigns in Landbase: connecting LinkedIn (max 4/day), AI messaging, templates aligned to pain points."},
+    {g:"LAUNCHING CAMPAIGNS",t:"Landbase LinkedIn Setup — Step by Step Doc",k:"doc",u:"https://docs.google.com/document/d/1MukxmJzaF7oXb2jfyegZMAASS1HGF-QA/edit?usp=sharing&ouid=111037955085653104390&rtpof=true&sd=true",d:"Step-by-step companion to the LinkedIn setup video: account connection, lead selection, campaign creation."},
+    {g:"LAUNCHING CAMPAIGNS",t:"Create a Follow-up / Re-engagement Email Campaign",k:"doc",u:"https://docs.google.com/document/d/1xOkwdvd-QCWLqw4dDytB185Qbcl7ItmZiXrwT71s96E/edit?usp=sharing",d:"Steps to effectively re-engage old prospects with a follow-up email campaign."},
+    {g:"CAMPAIGN MAINTENANCE",t:"Email Campaign Maintenance",k:"video",u:"https://www.loom.com/share/d67c467a0e1c4b40815e7a3870ed7046?sid=8578f335-15b8-4e4c-8a7e-9bceb00be233",d:"Check campaign performance in Landbase, add new leads using saved filters, and keep outreach fresh and active."},
+    {g:"CAMPAIGN MAINTENANCE",t:"Engagement Status Logic",k:"video",u:"https://www.loom.com/share/4da64d03fdbe4c7d95004d39e51bab48",d:"How the filtering system works for contacts in the engagement-status logic."},
+    {g:"REPLIES & REPORTING",t:"Managing LinkedIn Replies & Reporting",k:"video",u:"https://www.loom.com/share/3027b1a2e338453ea4e75a6f3c012e0c",d:"Access and manage LinkedIn campaign responses in Landbase and find reporting metrics."},
+    {g:"REPLIES & REPORTING",t:"Managing LinkedIn Replies & Reporting — Step by Step Doc",k:"doc",u:"https://docs.google.com/document/d/17ur-CXSkJ8S1DzihiXnv48IY406Ofrpo/edit?usp=sharing&ouid=111037955085653104390&rtpof=true&sd=true",d:"Step-by-step companion to the Replies & Reporting video."},
+    {g:"REPLIES & REPORTING",t:"How to Pull Lead & Activity Reports",k:"video",u:"https://www.loom.com/share/f7367c34f16f4241913f1c68d37018c3",d:"Efficiently pull MQL/SQL data, track outreach activity (calls, emails, LinkedIn), and prep clean lead sheets with exportable data from LandBase."}
+  ],
+  playbooks: [
+    {t:"Cold Calling Playbook",u:"https://drive.google.com/file/d/1SyPz5_v_L9BKYCZ04UO7ukSCx1anXNuH/view?usp=drive_link",d:"The foundation of the Martal Outbound Series. Mindset, structure, scripts, and habits behind consistent cold-calling results."},
+    {t:"Email & LinkedIn Playbook",u:"https://drive.google.com/file/d/1C8AsLZoKO_T27ueQ8GBzBwu6aRf03Wyu/view?usp=drive_link",d:"The two async channels that run alongside cold calling. Lead with the problem, not the product. Shorter, more curious, and far more likely to get a response."},
+    {t:"Objection Handling Playbook",u:"https://drive.google.com/file/d/1SWfUCVZLo9Yt7l-iIy0zRJo3HmGGrGFe/view?usp=drive_link",d:"Objections by stage: early resistance before the conversation, mid-call objections during live conversations, late-stage objections as prospects near a decision."},
+    {t:"The List-Building Playbook",u:"https://drive.google.com/file/d/1natBjUSjMGecndmCct3KXZ7QVqb1tUsD/view?usp=drive_link",d:"Built around two questions: 'How do I find enough relevant companies?' and 'Why don't the industries match my client's ICP?' Both are filter-logic opportunities, not Landbase limitations."}
+  ]
+};
+
+// ---------- URL ROUTING ----------
+// Returns {url, mode} where mode is 'embed' or 'newtab'
+function routeUrl(u){
+  try{
+    const x = new URL(u);
+    const h = x.hostname.replace(/^www\./,'');
+    // YouTube → embed
+    if(h.includes('youtube.com') || h === 'youtu.be'){
+      let id = '';
+      if(h === 'youtu.be') id = x.pathname.slice(1);
+      else if(x.searchParams.get('v')) id = x.searchParams.get('v');
+      else if(x.pathname.startsWith('/embed/')) id = x.pathname.split('/')[2];
+      if(id) return {url:`https://www.youtube.com/embed/${id}`, mode:'embed'};
+    }
+    // Loom → embed
+    if(h.includes('loom.com')){
+      const m = x.pathname.match(/\/share\/([a-zA-Z0-9]+)/);
+      if(m) return {url:`https://www.loom.com/embed/${m[1]}`, mode:'embed'};
+    }
+    // Google Drive files → preview (PDFs)
+    if(h.includes('drive.google.com')){
+      const m = x.pathname.match(/\/file\/d\/([^/]+)/);
+      if(m) return {url:`https://drive.google.com/file/d/${m[1]}/preview`, mode:'embed'};
+    }
+    // Google Docs/Sheets — embed via /preview
+    if(h.includes('docs.google.com')){
+      // try to convert /edit to /preview
+      const swapped = u.replace(/\/edit[^?#]*/, '/preview').replace(/\?.*$/,'');
+      return {url:swapped, mode:'embed'};
+    }
+    // Default: new tab (HubSpot, ChatGPT GPTs, raw web tools, etc — these break in iframes)
+    return {url:u, mode:'newtab'};
+  }catch(e){
+    return {url:u, mode:'newtab'};
+  }
+}
+
+// ---------- RENDER ----------
+function groupBy(items, key){
+  const map = new Map();
+  for(const i of items){
+    if(!map.has(i[key])) map.set(i[key], []);
+    map.get(i[key]).push(i);
+  }
+  return map;
+}
+
+function renderTrack(track){
+  const root = document.getElementById('track-' + track);
+  root.innerHTML = '';
+  const groups = groupBy(DATA[track], 'g');
+  for(const [groupName, items] of groups){
+    const groupEl = document.createElement('div');
+    groupEl.innerHTML = `<div class="group-label">${groupName}</div>`;
+    const cards = document.createElement('div');
+    cards.className = 'cards';
+    for(const item of items){
+      const btn = document.createElement('button');
+      btn.className = 'card';
+      btn.innerHTML = `
+        <div class="row">
+          <span class="type type-${item.k}">${item.k}</span>
+          <span class="arrow">↗</span>
+        </div>
+        <div class="title">${item.t}</div>
+        <div class="desc">${item.d}</div>
+      `;
+      btn.addEventListener('click', () => openItem(item));
+      cards.appendChild(btn);
+    }
+    groupEl.appendChild(cards);
+    root.appendChild(groupEl);
+  }
+}
+
+function renderPlaybooks(){
+  const root = document.getElementById('pb-grid');
+  root.innerHTML = '';
+  for(const p of DATA.playbooks){
+    const btn = document.createElement('button');
+    btn.className = 'pb';
+    btn.innerHTML = `
+      <div class="pk">Playbook · PDF</div>
+      <div class="pt">${p.t}</div>
+      <div class="pd">${p.d}</div>
+    `;
+    btn.addEventListener('click', () => openItem(p));
+    root.appendChild(btn);
+  }
+}
+
+// ---------- MODAL ----------
+let currentUrl = '';
+
+function openItem(item){
+  const routed = routeUrl(item.u);
+  currentUrl = item.u;
+  if(routed.mode === 'newtab'){
+    window.open(item.u, '_blank', 'noopener,noreferrer');
+    return;
+  }
+  document.getElementById('modal-title').textContent = item.t;
+  document.getElementById('modal-frame').src = routed.url;
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  document.getElementById('modal-frame').src = 'about:blank';
+  document.body.style.overflow = '';
+}
+
+function openInNewTab(){
+  if(currentUrl) window.open(currentUrl, '_blank', 'noopener,noreferrer');
+}
+
+document.getElementById('modal').addEventListener('click', e => {
+  if(e.target.id === 'modal') closeModal();
+});
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') closeModal();
+});
+
+// ---------- TABS ----------
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const track = tab.dataset.track;
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t === tab));
+    document.getElementById('track-general').hidden = (track !== 'general');
+    document.getElementById('track-landbase').hidden = (track !== 'landbase');
+  });
+});
+
+// ---------- INIT ----------
+renderTrack('general');
+renderTrack('landbase');
+renderPlaybooks();
+
+const totalVD = DATA.general.length + DATA.landbase.length;
+const totalPB = DATA.playbooks.length;
+document.getElementById('stat-total').textContent = totalVD + totalPB;
+document.getElementById('stat-vd').textContent = totalVD;
+document.getElementById('stat-pb').textContent = totalPB;
+document.getElementById('updated').textContent = new Date().toLocaleDateString('en-US', {month:'short', year:'numeric'});
+</script>
+
+</body>
+</html>
