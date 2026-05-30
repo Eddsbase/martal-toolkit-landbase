@@ -1,0 +1,15 @@
+channel,target,query_or_filter,what_it_finds,signal_strength,notes
+# Run these to source rows for sdr-hiring-decision-makers-list.csv. Qualify every hit against the ICP (>=50 employees AND >=$50M revenue) before enriching in Landbase.
+LinkedIn Sales Navigator,Decision-makers,"(""VP Sales"" OR ""Head of Sales"" OR ""Director of Sales"" OR CRO OR ""Chief Revenue Officer"" OR ""VP Revenue"" OR ""Head of Sales Development"") NOT (SDR OR BDR OR Intern OR ""Account Executive"")",Senior sales leaders excluding ICs and the SDRs themselves,baseline,Capitalize AND/OR/NOT; LinkedIn ignores wildcards
+LinkedIn Sales Navigator,Spotlight filter,"Company headcount = 51-200 / 201-500 / 501-1000 + ... + Posted on LinkedIn in past 30 days",In-market leaders actively posting,strong,Stack with headcount to enforce the >=50 employee rule
+LinkedIn Sales Navigator,Spotlight filter,"Company hiring on LinkedIn = true  (then filter company jobs to SDR/BDR/Sales Development)",Companies expanding the SDR function right now,strong,The core 'hiring SDRs' signal
+LinkedIn Sales Navigator,Spotlight filter,"Department headcount growth: Sales (positive)",Teams growing sales headcount,medium,Confirms expansion intent
+LinkedIn Posts search,Pain language,"booked meetings  |  pipeline is dry  |  outbound isn't working  |  ramping SDRs  |  scaling our SDR team",Low-visibility posts voicing the exact pain,strong,Map the poster -> their company -> qualify ICP
+LinkedIn Jobs,Hiring intent,"Job title: ""SDR"" OR ""BDR"" OR ""Sales Development Representative"" ; Company size 51+",Live SDR reqs = budget + need,strong,Each posting company is a target account
+Greenhouse / Lever / Ashby,Hiring intent,"Search public boards for SDR / BDR / Sales Development openings",ATS-confirmed open SDR roles,strong,Often lists hiring-manager name -> the decision-maker
+Reddit,r/sales,"hiring SDR  |  can't book meetings  |  pipeline dry  |  SDR ramp  |  agency vs in-house SDR",Sales leaders venting the pain in detail,medium,Pseudonymous — use as account/intent signal, then ID the company
+Reddit,r/SaaS,"outbound not working  |  need more meetings  |  should I hire an SDR",Founders/VPs of SaaS cos describing pipeline gaps,medium,Cross-check company headcount/revenue
+Reddit,r/msp,"hired SDRs  |  fill the calendar  |  lead gen agency",IT/MSP sales leaders (often >=50 employees),medium,Strong fit for booked-meetings offer
+Reddit,r/startups + r/Entrepreneur,"sales pipeline  |  cold outbound  |  first SDR hire",Scaling teams adding sales capacity,weak,Filter hard on revenue/headcount
+Reddit,r/RevOps,"SDR capacity  |  meeting conversion  |  outbound stack",RevOps leaders diagnosing meeting-gen problems,medium,Decision-influencers for the offer
+Landbase,Enrichment + verification,"Import qualified accounts/contacts -> enrich work_email + direct_phone -> verify",Turns qualified rows into contactable, compliant records,n/a,Only legitimate path to 'all contact info'
